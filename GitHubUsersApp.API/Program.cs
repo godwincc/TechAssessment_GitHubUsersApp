@@ -29,15 +29,15 @@ builder.Services.AddApiVersioning(options =>
 
 //just some test configs for watchdog
 builder.Services.AddWatchDogServices(settings => { 
-    settings.IsAutoClear = true;
-    settings.ClearTimeSchedule = WatchDogAutoClearScheduleEnum.Quarterly;
+    settings.IsAutoClear = builder.Configuration.GetValue<bool>("WatchDogConfig:EnableAutoClear"); 
+    settings.ClearTimeSchedule = (WatchDogAutoClearScheduleEnum)builder.Configuration.GetValue<int>("WatchDogConfig:AutoClearSchedule"); 
 });
 
 //inject the client API
 builder.Services.AddHttpClient("GitHubAPI", client =>
 {
     client.DefaultRequestHeaders.AcceptLanguage.Clear();
-    client.BaseAddress = new Uri("https://api.github.com/");
+    client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ExternalAPI:GitHubAPI"));
     client.DefaultRequestHeaders.Add("Accept", "application/json");
     client.DefaultRequestHeaders.Add("User-Agent", "TranportCapital-GetGitHubUser-Test");
 
@@ -104,8 +104,8 @@ app.UseWatchDogExceptionLogger();
 //change this to a better repo
 app.UseWatchDog(opt =>
 {
-    opt.WatchPageUsername = "admin";
-    opt.WatchPagePassword = "admin";
+    opt.WatchPageUsername = app.Configuration.GetValue<string>("WatchDogConfig:Username");
+    opt.WatchPagePassword = app.Configuration.GetValue<string>("WatchDogConfig:Password");
 });
 
 
