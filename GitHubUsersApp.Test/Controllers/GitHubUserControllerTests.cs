@@ -22,8 +22,7 @@ namespace GitHubUsersApp.Test.Controllers
         private readonly IFixture _fixture;
         private readonly Mock<IGitHubUserService> _serviceMock;
         private readonly GitHubUserController _contrl;
-
-        private readonly Random rand = new Random();
+                
         public GitHubUserControllerTests()
         {
             _fixture = new Fixture();
@@ -73,7 +72,7 @@ namespace GitHubUsersApp.Test.Controllers
             //-Arrange-
             var _usernames = _fixture.Create<List<string>>();
 
-            IEnumerable<GitHubUser> _response = null;
+            IEnumerable<GitHubUser>? _response = null;
             _serviceMock.Setup(x => x.GetUsersAsync(_usernames)).ReturnsAsync(_response);
 
             //-Act-

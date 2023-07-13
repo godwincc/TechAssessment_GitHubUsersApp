@@ -22,7 +22,7 @@ namespace GitHubUsersApp.API.v1.Services
         public async Task<GitHubUser> GetUserAsync(string username)
         {
 
-            GitHubUser _user = new GitHubUser();
+            GitHubUser? _user = new();
             int retry = 0;
             while (retry < 5) // implement some more elegant way to retry?
             {
@@ -33,7 +33,7 @@ namespace GitHubUsersApp.API.v1.Services
 
                     if (_response.IsSuccessStatusCode)
                     {
-                        User _userTemp = JsonSerializer.Deserialize<User>(_response.Content.ReadAsStringAsync().Result);
+                        User? _userTemp = JsonSerializer.Deserialize<User>(_response.Content.ReadAsStringAsync().Result);
 
                         //maybe do some business logic here
                         if (_userTemp != null)
@@ -90,9 +90,9 @@ namespace GitHubUsersApp.API.v1.Services
 
         public async Task<IEnumerable<GitHubUser>> GetUsersAsync(List<string> usernames)
         {
-            ICollection<GitHubUser> _users = new HashSet<GitHubUser>();
+            ICollection<GitHubUser>? _users = new HashSet<GitHubUser>();
 
-            GitHubUser _user;
+            GitHubUser? _user;
 
             foreach (var username in usernames)
             {
