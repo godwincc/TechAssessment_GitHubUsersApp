@@ -1,22 +1,31 @@
-using GitHubUsersAPI.Interfaces;
-using GitHubUsersAPI.Models;
-using GitHubUsersAPI.Services;
+using GitHubUsersApp.API.v1.Models;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson.IO;
 using System.Diagnostics;
 using WatchDog;
 using WatchDog.src.Enums;
 using Microsoft.Extensions.Options;
+using GitHubUsersApp.API.v1.Services;
+using GitHubUsersApp.API.v1.Interfaces;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<IGitHubUserService, GitHubUserService>();
+builder.Services.AddSingleton<IGitHubUserService, GitHubUserService>();
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1,0);
+    options.UseApiBehavior = true;
+});
 
 //just some test configs for watchdog
 builder.Services.AddWatchDogServices(settings => { 

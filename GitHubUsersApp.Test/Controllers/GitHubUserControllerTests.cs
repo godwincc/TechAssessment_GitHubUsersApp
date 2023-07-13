@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AutoFixture;
 using FluentAssertions;
-using GitHubUsersAPI.Controllers;
-using GitHubUsersAPI.Interfaces;
-using GitHubUsersAPI.Models;
+using GitHubUsersApp.API.v1.Controllers;
+using GitHubUsersApp.API.v1.Interfaces;
+using GitHubUsersApp.API.v1.Models;
 using Moq;
 using Xunit;
 using Microsoft.AspNetCore.Http;
@@ -40,7 +40,7 @@ namespace GitHubUsersApp.Test.Controllers
             var _usernames = _fixture.Create<List<string>> ();
             
             var _response = _fixture.Create<IEnumerable<GitHubUser>>();
-            _serviceMock.Setup(x => x.GetUsers(_usernames)).ReturnsAsync(_response);
+            _serviceMock.Setup(x => x.GetUsersAsync(_usernames)).ReturnsAsync(_response);
 
             //-Act-
             var _result = await _contrl.retrieveUsers(_usernames).ConfigureAwait(false);
@@ -57,7 +57,7 @@ namespace GitHubUsersApp.Test.Controllers
             List<string> _usernames = new List<string>(); //empty string
 
             var _response = _fixture.Create<IEnumerable<GitHubUser>>();
-            _serviceMock.Setup(x => x.GetUsers(_usernames)).ReturnsAsync(_response);
+            _serviceMock.Setup(x => x.GetUsersAsync(_usernames)).ReturnsAsync(_response);
 
             //-Act-
             var _result = await _contrl.retrieveUsers(_usernames).ConfigureAwait(false);
@@ -74,7 +74,7 @@ namespace GitHubUsersApp.Test.Controllers
             var _usernames = _fixture.Create<List<string>>();
 
             IEnumerable<GitHubUser> _response = null;
-            _serviceMock.Setup(x => x.GetUsers(_usernames)).ReturnsAsync(_response);
+            _serviceMock.Setup(x => x.GetUsersAsync(_usernames)).ReturnsAsync(_response);
 
             //-Act-
             var _result = await _contrl.retrieveUsers(_usernames).ConfigureAwait(false);
